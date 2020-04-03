@@ -1,0 +1,25 @@
+Version 100
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' Magic Shit Yo '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' darkcee.legit@gmail.com ''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'' b  = idle
+'' o  = idle+ao
+'' -k = hkx comes from another mod.
+'' -AVbHumanoidFootIKDisable = disable foot falls
+'' -AVIbHeadTrackSpine = keep torso locked if head tracking enabled
+'' -h = head tracking enabled
+'' -a = acyclic (don't loop)
+'' -ac = animated camera
+
+'' this is a dummy animation. i am using it to define all the custom animation events that my animations will need.
+
+b -a,TDSEMAG.TeleportTrigger/0.01,TSoundPlay.dse_mag_SndSnap/0.02 dse-mag-eventpreloader01 actions\teleport01-a1.hkx
+
+'' teleport animations
+
+b -a,ac,AVIbHeadTrackSpine,AVbHumanoidFootIKDisable dse-mag-teleport01-a1 actions\teleport01-a1.hkx
