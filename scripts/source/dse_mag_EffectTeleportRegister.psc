@@ -23,7 +23,7 @@ Event OnEffectStart(Actor Target, Actor Caster)
 
 	If(self.CostItemQty > 0 && self.CostItemType != None)
 		If(Caster.GetItemCount(self.CostItemType) < self.CostItemQty)
-			Debug.MessageBox("This spell requires " + self.CostItemQty + " x " + self.CostItemType.GetName())
+			Debug.MessageBox("Without " + self.CostItemQty + " " + self.CostItemType.GetName() + " the rune is unable to solidify.")
 			self.Dispel()
 			Return
 		EndIf

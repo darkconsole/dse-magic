@@ -15,7 +15,8 @@ Float Property DefaultDelay = 2.0 AutoReadOnly Hidden
 
 Event OnLoad()
 
-	If(self.Delay > 0.0 && self.Target != None)
+	If(self != None && self.Delay > 0.0 && self.Target != None)
+		Debug.Trace("[DWMAG] ActiTeleportSelect.OnLoad " + self.Delay + " " + self.Target)
 		self.RegisterForSingleUpdate(self.Delay)
 	EndIf
 
@@ -30,6 +31,11 @@ EndEvent
 Event OnActivate(ObjectReference What)
 
 	Actor Who = What As Actor
+
+	If(Who == None)
+		Return
+	EndIf
+
 	self.Waypoint = self.MenuTeleportList(Who) As ObjectReference
 	self.RestoreFirstPerson = (Game.GetCameraState() == 0)
 
