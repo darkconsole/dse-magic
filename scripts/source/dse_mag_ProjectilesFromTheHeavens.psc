@@ -23,6 +23,15 @@ Perk Property FormTrackingPerk Auto
 Int Property Radius = 100 Auto
 {Default: 100u - the radius of error in targeting the projectile.}
 
+Int Property JitterRadiusEmitter = 100 Auto
+{Default 100u - the amount of jitter randomness applied to the emitter location.}
+
+Int Property JitterRadiusTarget = 100 Auto
+{Default 100u - the amount of jitter randomness applied to the targeting.}
+
+Int Property TargetingRadius = 100 Auto
+{Default 100u - the amount of jitter randomness applied to the emitter location.}
+
 String Property ProjSkill = "Destruction" Auto
 {Default: Destruction - what skill can increase the projectile count.}
 
@@ -70,6 +79,8 @@ Actor Property Caster = None Auto Hidden
 Actor Property Player = None Auto Hidden
 
 Event OnLoad()
+
+	Int ErrorRadius = self.Radius
 
 	If(self.Raining)
 		;; the reason for this was amazing. it turns out that every time
@@ -131,7 +142,9 @@ Event OnLoad()
 
 	If(Caster.HasPerk(self.FormTrackingPerk))
 		;; find the nearest actor to track them.
-		Target = Game.FindClosestActorFromRef(self.Area,self.Radius) as ObjectReference
+		Debug.Trace("[DMAG] Has Targeting Perk")
+		Target = Game.FindClosestActorFromRef(self.Area,(self.Radius * 2)) as ObjectReference
+		ErrorRadius = 0
 	EndIf
 
 	If(self.Target == None)
@@ -152,8 +165,8 @@ Event OnLoad()
 		;; arrows they do not bounce perfectly right back straight up if they
 		;; hit a rock because it looked super stupid when they all do it.
 
-		PosMod[0] = Utility.RandomInt(-self.Radius,self.Radius)
-		PosMod[1] = Utility.RandomInt(-self.Radius,self.Radius)
+		PosMod[0] = Utility.RandomInt(-ErrorRadius,ErrorRadius)
+		PosMod[1] = Utility.RandomInt(-ErrorRadius,ErrorRadius)
 
 		;; using the target location for the aim fuzzing will allow us to create
 		;; a moving cloud of fuck over a tracked target if the target is indeed
