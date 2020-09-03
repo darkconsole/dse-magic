@@ -10,13 +10,16 @@ Bool Property RestoreFirstPerson Auto Hidden
 
 Actor Property Target Auto Hidden
 Bool Property Temporary = FALSE Auto Hidden
+Float Property LifeTime = 60.0 Auto Hidden
+
 Float Property Delay = -1.0 Auto Hidden
 Float Property DefaultDelay = 2.0 AutoReadOnly Hidden
 
 Event OnLoad()
+	Utility.Wait(0.25)
 
 	If(self != None && self.Delay > 0.0 && self.Target != None)
-		Debug.Trace("[DWMAG] ActiTeleportSelect.OnLoad " + self.Delay + " " + self.Target)
+		;;Debug.Trace("[DWMAG] ActiTeleportSelect.OnLoad " + self.Delay + " " + self.Target)
 		self.RegisterForSingleUpdate(self.Delay)
 	EndIf
 
@@ -24,7 +27,10 @@ Event OnLoad()
 EndEvent
 
 Event OnUpdate()
-	self.Activate(self.Target)
+	If(self != None && self.Target != None)
+		self.Activate(self.Target)
+	EndIf
+
 	Return
 EndEvent
 
@@ -69,6 +75,7 @@ Event OnAnimationEvent(ObjectReference What, String EventName)
 	If(EventName == self.KeyTeleportEvent)
 		self.UnregisterForAnimationEvent(What,EventName)
 		What.MoveTo(self.Waypoint)
+		Utility.Wait(1.0)
 		self.TeleportEffect.Stop(What)
 		Game.SetPlayerAIDriven(FALSE)
 		Game.EnablePlayerControls()
@@ -90,8 +97,18 @@ EndEvent
 
 Function Destroy()
 
-	self.PlayGamebryoAnimation("mEnd")
-	Utility.Wait(4.0)
+	If(self.Temporary)
+		Utility.Wait(self.LifeTime)
+	EndIf
+
+	If(self.Is3dLoaded() && self.IsNearPlayer())
+		self.PlayGamebryoAnimation("mEnd")
+		Utility.Wait(4.0)
+	EndIf
+
+	StorageUtil.FormListRemove(Game.GetPlayer(),self.KeyTeleportLocations,self,FALSE)
+	StorageUtil.UnsetStringValue(self,self.KeyTeleportName)
+
 	self.Disable()
 	self.Delete()
 

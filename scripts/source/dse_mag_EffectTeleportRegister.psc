@@ -34,6 +34,7 @@ Event OnEffectStart(Actor Target, Actor Caster)
 	;;;;;;;;
 
 	Here = Player.PlaceAtMe(self.MarkerTeleportLocation,1,TRUE,TRUE)
+	Here.SetPosition(Here.GetPositionX(),Here.GetPositionY(),(Here.GetPositionZ() + 10))
 
 	;; do some cleanup on the registered point list in case something to deleted
 	;; somehow or something.
